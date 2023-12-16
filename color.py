@@ -1,3 +1,6 @@
+import math
+
+
 class RGB:
     def __init__(self, red: int = 0, green: int = 0, blue: int = 0) -> None:
         self.red = self.__clamp(red, 0, 255)
@@ -33,6 +36,29 @@ class RGB:
     def __str__(self) -> str:
         return f"rgb({self.red}, {self.green}, {self.blue})"
 
+    def hue(self) -> float:
+        # 0.0 〜 1.0
+        if self.red == self.green and self.red == self.blue:
+            return 0.0
+        max_v = max(self.red, self.green, self.blue)
+        min_v = min(self.red, self.green, self.blue)
+        if max_v == self.red:
+            return 60 * ((self.green - self.blue) / (max_v - min_v))
+        if max_v == self.green:
+            return 60 * ((self.blue - self.red) / (max_v - min_v)) + 120
+        return 60 * ((self.red - self.green) / (max_v - min_v)) + 240
+
+    def sat(self) -> float:
+        # 0.0 〜 1.0
+        max_v = max(self.red, self.green, self.blue)
+        min_v = min(self.red, self.green, self.blue)
+        return (max_v - min_v) / max_v
+
+    def val(self) -> float:
+        # 0.0 〜 1.0
+        max_v = max(self.red, self.green, self.blue)
+        return max_v / 255
+
 
 def contrast_ratio(color1: RGB, color2: RGB) -> float:
     L1 = color1.rel_lum()
@@ -43,5 +69,7 @@ def contrast_ratio(color1: RGB, color2: RGB) -> float:
         return (L2 + 0.05) / (L1 + 0.05)
 
 
-color = RGB(128, 128, 128)
-print(color)
+color = RGB(112, 45, 0)
+print(color.hue())
+print(color.sat())
+print(color.val())
