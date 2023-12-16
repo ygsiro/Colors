@@ -60,6 +60,21 @@ class RGB:
         return max_v / 255
 
 
+class HSV:
+    def __init__(self, hue: float, sat: float, val: float) -> None:
+        self.hue = self.__clamp(hue, 0.0, 360.0)
+        self.sat = self.__clamp(sat, 0.0, 1.0)
+        self.val = self.__clamp(val, 0.0, 1.0)
+
+    def __clamp(self, val, min_v, max_v):
+        if val <= min_v:
+            return min_v
+        elif val >= max_v:
+            return max_v
+        else:
+            return val
+
+
 def contrast_ratio(color1: RGB, color2: RGB) -> float:
     L1 = color1.rel_lum()
     L2 = color2.rel_lum()
